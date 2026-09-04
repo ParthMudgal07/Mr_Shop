@@ -19,6 +19,9 @@ load_dotenv()
 
 api_key = os.getenv("OPENROUTER_API_KEY", "").strip().strip('"\'')
 
+if not api_key and "OPENROUTER_API_KEY" in st.secrets:
+    api_key = st.secrets["OPENROUTER_API_KEY"].strip()
+
 # OpenRouter keys work for all models. Gemma free is often rate-limited,
 # so we keep it primary and fall back when needed.
 DEFAULT_MODEL = "google/gemma-4-26b-a4b-it:free"
