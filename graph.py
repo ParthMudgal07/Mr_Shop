@@ -3,7 +3,7 @@ import os
 import re
 import time
 from typing import TypedDict, Optional, Literal
-
+import streamlit as st
 from pydantic import BaseModel, Field, ValidationError
 from dotenv import load_dotenv
 
@@ -43,6 +43,11 @@ def make_llm(model: str) -> ChatOpenAI:
         temperature=0,
         max_tokens=1024,
         max_retries=1,
+        extra_body={
+            "reasoning": {
+                "enabled": False
+            }
+        },
         default_headers={
             "HTTP-Referer": "https://localhost",
             "X-Title": "Mr.Shop",
@@ -490,6 +495,8 @@ Reply in a helpful, concise chat tone (2-6 short sentences).
 Use the ambient memory when relevant.
 If memory is missing for what they asked, say what you know and ask one clear follow-up.
 Do not mention JSON, intents, routers, or that you are an agent framework.
+Return ONLY the final response to the user.
+Do not output your reasoning, analysis, planning, drafts, or thinking process.
 """
     try:
         answer = invoke_chat(prompt)
